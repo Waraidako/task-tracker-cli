@@ -57,7 +57,7 @@ func (taskFile *TaskFile) Mark(id int, status string) bool {
 
 	if taskIndex != -1 {
 		taskFile.Tasks[taskIndex].Status = status
-		taskFile.Tasks[taskIndex].CreatedAt = time.Now().Format(timingFormat)
+		taskFile.Tasks[taskIndex].UpdatedAt = time.Now().Format(timingFormat)
 		return true
 	}
 	return false
