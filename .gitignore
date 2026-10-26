@@ -1,0 +1,9 @@
+# Compiled executables
+/task-cli
+/task-cli.exe
+
+# The JSON storage
+/task-list.json
+
+# GoLand's project config
+/.idea/
