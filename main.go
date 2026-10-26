@@ -82,8 +82,7 @@ func run() error {
 		)
 
 	case "list":
-		// List...
-		return nil
+		return handleListTasks()
 
 	default:
 		return fmt.Errorf("unknown command: %s", os.Args[1])
@@ -193,4 +192,58 @@ func handleUpdateTask(id int, description string) (success bool, err error) {
 	return handleExistingTask(id, func(taskFile *task.TaskFile) bool {
 		return taskFile.Update(id, description)
 	})
+}
+
+func fetchListFilter() (filter string, err error) {
+	if argLength == 3 {
+		filter = os.Args[2]
+		switch filter {
+		case "todo", "in-progress", "done":
+			return filter, nil
+		default:
+			return "", fmt.Errorf("invalid filter: %s", filter)
+		}
+	}
+	return "", nil
+}
+
+func handleListTasks() (err error) {
+	if argLength > 3 {
+		return fmt.Errorf("too many arguments")
+	}
+
+	filter, err := fetchListFilter()
+	if err != nil {
+		return err
+	}
+
+	taskFile, err := storage.ReadTasks()
+	if err != nil {
+		return err
+	}
+
+	filteredTasks := taskFile.Tasks
+
+	if filter != "" {
+		filteredTasks = make([]task.Task, 0)
+		for _, currentTask := range taskFile.Tasks {
+			if currentTask.Status == filter {
+				filteredTasks = append(filteredTasks, currentTask)
+			}
+		}
+	}
+
+	for _, currentTask := range filteredTasks {
+		fmt.Printf(
+			"\nTask %s:\n"+
+				"- id: %d\n"+
+				"- status: %s\n"+
+				"- created at: %s\n"+
+				"- updated at: %s\n\n",
+			currentTask.Description,
+			currentTask.ID, currentTask.Status,
+			currentTask.CreatedAt,
+			currentTask.UpdatedAt)
+	}
+	return nil
 }

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"errors"
 	"os"
@@ -46,7 +47,7 @@ func WriteTasks(taskFile task.TaskFile) error {
 	defer os.Remove(tmp.Name())
 	defer tmp.Close()
 
-	if err = json.MarshalWrite(tmp, taskFile); err != nil {
+	if err = json.MarshalWrite(tmp, taskFile, jsontext.WithIndent("    ")); err != nil {
 		return err
 	}
 

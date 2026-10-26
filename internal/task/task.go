@@ -36,10 +36,6 @@ func (taskFile *TaskFile) AddTask(description string) int {
 	return id
 }
 
-func (taskFile *TaskFile) UpdateTask(id int, description string) {
-	taskFile.Tasks[id].Description = description
-}
-
 func (taskFile *TaskFile) DeleteTask(id int) bool {
 	oldLength := len(taskFile.Tasks)
 
@@ -61,6 +57,7 @@ func (taskFile *TaskFile) Mark(id int, status string) bool {
 
 	if taskIndex != -1 {
 		taskFile.Tasks[taskIndex].Status = status
+		taskFile.Tasks[taskIndex].CreatedAt = time.Now().Format(timingFormat)
 		return true
 	}
 	return false
