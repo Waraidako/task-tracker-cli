@@ -236,10 +236,10 @@ func handleListTasks() (err error) {
 	for _, currentTask := range filteredTasks {
 		fmt.Printf(
 			"\nTask %s:\n"+
-				"- id: %d\n"+
-				"- status: %s\n"+
-				"- created at: %s\n"+
-				"- updated at: %s\n\n",
+				"  - id: %d\n"+
+				"  - status: %s\n"+
+				"  - created at: %s\n"+
+				"  - updated at: %s\n\n",
 			currentTask.Description,
 			currentTask.ID, currentTask.Status,
 			currentTask.CreatedAt,
